@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Descubre tu Método de Estudio</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h2 { color: #333; }
+    .pregunta { margin-bottom: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
+    #resultado { margin-top: 30px; padding: 20px; border: 1px solid #ccc; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+
+  <h1>📚 Cuestionario: Descubre tu Método de Estudio 📊</h1>
+
+  <form id="cuestionario">
+    <div id="preguntas"></div>
+    <button type="button" onclick="calcularResultado()">Calcular Resultado</button>
+  </form>
+
+  <div id="resultado"></div>
+
+  <script>
+    const preguntas = [
+      { texto: "Cuando estudias, ¿qué prefieres?", opciones: [
+        ["Explicarle a alguien más", 40],
+        ["Leer apuntes y libros", 30],
+        ["Hacer resúmenes o mapas mentales", 10],
+        ["Ver videos o documentales", 20]
+      ]},
+      { texto: "¿Cómo organizas tu tiempo para estudiar?", opciones: [
+        ["Planifico un horario semanal con anticipación", 10],
+        ["Estudio a última hora antes del examen", 40],
+        ["Hago sesiones cortas pero frecuentes", 20],
+        ["Dedico un par de horas antes del día importante", 30]
+      ]},
+      { texto: "¿Qué te ayuda a recordar mejor un tema?", opciones: [
+        ["Dibujar esquemas o escribir resúmenes", 30],
+        ["Releer varias veces", 20],
+        ["Escuchar o ver explicaciones", 40],
+        ["Explicar en voz alta o debatir", 10]
+      ]},
+      { texto: "Cuando tienes que estudiar algo difícil:", opciones: [
+        ["Busco un video que lo explique", 10],
+        ["Evito hacerlo hasta que sea urgente", 30],
+        ["Le pregunto a alguien que sepa", 20],
+        ["Lo divido en partes y hago un esquema", 40]
+      ]},
+      { texto: "¿Dónde te gusta estudiar más?", opciones: [
+        ["En grupo con amigos", 10],
+        ["En una cafetería o parque", 40],
+        ["En mi cama o sofá", 20],
+        ["En un escritorio ordenado y silencioso", 30]
+      ]},
+      { texto: "¿Cómo prefieres recibir información?", opciones: [
+        ["Conversando con alguien", 30],
+        ["A través de videos o audios", 20],
+        ["Leyendo textos largos", 10],
+        ["Viendo diagramas o imágenes", 40]
+      ]},
+      { texto: "Si tienes que memorizar datos:", opciones: [
+        ["Escribo listas o mapas conceptuales", 40],
+        ["Repito mentalmente una y otra vez", 10],
+        ["Hago preguntas y respuestas en voz alta", 30],
+        ["Escucho canciones o grabaciones con los datos", 20]
+      ]},
+      { texto: "¿Cómo te motivas para estudiar?", opciones: [
+        ["Me pongo metas pequeñas y premios", 40],
+        ["Pongo música o vídeos de fondo", 20],
+        ["Estudio con alguien más", 30],
+        ["Me obligo cuando ya no queda tiempo", 10]
+      ]},
+      { texto: "¿Cuál de estas actividades disfrutas más?", opciones: [
+        ["Ver series o películas", 20],
+        ["Leer artículos o novelas", 10],
+        ["Hacer manualidades o dibujar", 40],
+        ["Hablar o debatir sobre temas", 30]
+      ]},
+      { texto: "Cuando no entiendes algo:", opciones: [
+        ["Hago dibujos o resúmenes para aclararlo", 40],
+        ["Pido que me lo expliquen", 30],
+        ["Busco videos o tutoriales", 20],
+        ["Lo ignoro y sigo", 10]
+      ]},
+      { texto: "¿Qué herramienta usarías primero para repasar?", opciones: [
+        ["El libro o apuntes", 10],
+        ["YouTube o podcast", 20],
+        ["Charla con un compañero", 30],
+        ["Un esquema o resumen hecho por ti", 40]
+      ]},
+      { texto: "¿Cómo preparas un examen?", opciones: [
+        ["Solo leo apuntes de última hora", 10],
+        ["Veo videos-resumen", 20],
+        ["Hago esquemas y resúmenes con anticipación", 40],
+        ["Hago simulacros hablando en voz alta", 30]
+      ]},
+      { texto: "¿Qué tipo de contenido te resulta más fácil de aprender?", opciones: [
+        ["Imágenes y diagramas", 40],
+        ["Audio o video", 20],
+        ["Texto", 10],
+        ["Conversación o debates", 30]
+      ]},
+      { texto: "¿Cuál de estas frases te identifica más?", opciones: [
+        ["Aprendo mejor conversando", 30],
+        ["Prefiero leer solo", 10],
+        ["Me gustan los videos cortos", 20],
+        ["Necesito escribir o dibujar lo que estudio", 40]
+      ]},
+      { texto: "Cuando estudias en grupo:", opciones: [
+        ["Explico o pregunto mucho", 30],
+        ["Hago resúmenes o esquemas para todos", 40],
+        ["Veo lo que los demás hacen", 20],
+        ["No participo mucho", 10]
+      ]},
+      { texto: "¿Cuál es tu peor hábito al estudiar?", opciones: [
+        ["Dejar todo para el final", 10],
+        ["Distraerme con el móvil o videos", 20],
+        ["Hablar demasiado sin avanzar", 30],
+        ["Pasar más tiempo organizando que estudiando", 40]
+      ]},
+      { texto: "¿Cómo prefieres organizar información?", opciones: [
+        ["Videos explicativos", 20],
+        ["Listas de texto", 10],
+        ["Charlas o preguntas y respuestas", 30],
+        ["Mapas mentales o diagramas", 40]
+      ]},
+      { texto: "¿Qué prefieres hacer en una tarde libre?", opciones: [
+        ["Leer un libro", 10],
+        ["Dibujar, escribir o crear cosas", 40],
+        ["Salir a conversar", 30],
+        ["Ver series o películas", 20]
+      ]},
+      { texto: "¿Cómo estudias mejor?", opciones: [
+        ["Solo en silencio", 10],
+        ["Acompañado de alguien", 30],
+        ["Con música o videos", 20],
+        ["Haciendo cosas prácticas o gráficas", 40]
+      ]},
+      { texto: "¿Qué material te gustaría recibir para estudiar?", opciones: [
+        ["Un video explicativo", 20],
+        ["Un debate o taller", 30],
+        ["Un esquema o resumen visual", 40],
+        ["Un manual o libro digital", 10]
+      ]}
+    ];
+
+    const preguntasDiv = document.getElementById("preguntas");
+
+    preguntas.forEach((pregunta, i) => {
+      const div = document.createElement("div");
+      div.className = "pregunta";
+      div.innerHTML = `<h2>${i + 1}. ${pregunta.texto}</h2>`;
+
+      pregunta.opciones.forEach((op) => {
+        div.innerHTML += `
+          <label>
+            <input type="radio" name="pregunta${i}" value="${op[1]}" required>
+            ${op[0]}
+          </label><br>
+        `;
+      });
+
+      preguntasDiv.appendChild(div);
+    });
+
+    function calcularResultado() {
+      const form = document.getElementById("cuestionario");
+      const datos = new FormData(form);
+      let total = 0;
+
+      for (let i = 0; i < preguntas.length; i++) {
+        const valor = datos.get("pregunta" + i);
+        if (!valor) {
+          alert(`Por favor, responde la pregunta ${i + 1}.`);
+          return;
+        }
+        total += parseInt(valor);
+      }
+
+      let mensaje = "";
+
+      if (total <= 200) {
+        mensaje = "📖 Estilo lector/escritor: Prefieres leer, escribir y hacer resúmenes.";
+      } else if (total <= 300) {
+        mensaje = "🎧 Estilo auditivo/visual: Aprende mejor con videos, audios y multimedia.";
+      } else if (total <= 400) {
+        mensaje = "🗣️ Estilo social/comunicativo: Prefieres aprender conversando o explicando.";
+      } else {
+        mensaje = "🎨 Estilo visual/kinestésico: Necesitas esquemas, diagramas y prácticas.";
+      }
+
+      document.getElementById("resultado").innerHTML = `
+        <h2>Resultado Final:</h2>
+        <p>Puntaje total: <strong>${total}</strong></p>
+        <p>${mensaje}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
